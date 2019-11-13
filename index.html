@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>title</title>
+    <style>
+	#top-nav {
+	  display: flex;
+          flex-direction: row;
+	  justify-content: flex-end;
+	}
+
+	#top-nav .topnav-action + .topnav-action {
+		margin-left: 1em;
+	}
+	  
+    </style>
+  </head>
+  <body>
+	  <div id="top-nav"></div>
+	  <div id="page1"></div>	
+	  <div id="page2"></div>
+	  <div id="page3"></div>
+  <script type="text/javascript">
+  function autorun()
+   {
+   	initTopNav(); 
+   }
+   if (document.addEventListener) document.addEventListener("DOMContentLoaded", autorun, false);
+   else if (document.attachEvent) document.attachEvent("onreadystatechange", autorun);
+   else window.onload = autorun;
+
+function initTopNav()
+{
+	const [Create, Study] = topNavActions = [
+		document.createElement('input'),
+		document.createElement('input')
+	];
+
+	Create.value = 'create';
+	Study.value = 'study';
+
+	const P = document.getElementById('top-nav');
+
+	topNavActions.forEach((b) => {
+		b.type = 'button';
+		b.className += 'topnav-action';
+		P.appendChild(b);	
+	});
+
+	document.getElementById('top-nav').appendChild(Create);	
+	document.getElementById('top-nav').appendChild(Study);	
+}
+  </script>
+  </body>
+</html>
+
