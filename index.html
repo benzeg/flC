@@ -1,58 +1,110 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>title</title>
-    <style>
-	#top-nav {
-	  display: flex;
-          flex-direction: row;
-	  justify-content: flex-end;
-	}
 
-	#top-nav .topnav-action + .topnav-action {
-		margin-left: 1em;
-	}
-	  
-    </style>
-  </head>
-  <body>
-	  <div id="top-nav"></div>
-	  <div id="page1"></div>	
-	  <div id="page2"></div>
-	  <div id="page3"></div>
-  <script type="text/javascript">
-  function autorun()
-   {
-   	initTopNav(); 
-   }
-   if (document.addEventListener) document.addEventListener("DOMContentLoaded", autorun, false);
-   else if (document.attachEvent) document.attachEvent("onreadystatechange", autorun);
-   else window.onload = autorun;
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>title</title>
+	<style>
+		#top-nav {
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-end;
+		}
 
-function initTopNav()
-{
-	const [Create, Study] = topNavActions = [
-		document.createElement('input'),
-		document.createElement('input')
-	];
+		#top-nav .topnav-action+.topnav-action {
+			margin-left: 1em;
+		}
 
-	Create.value = 'create';
-	Study.value = 'study';
+		#make-a-card form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
 
-	const P = document.getElementById('top-nav');
+		#make-a-card form > * + * {
+			margin-top: 1em;
+		}
 
-	topNavActions.forEach((b) => {
-		b.type = 'button';
-		b.className += 'topnav-action';
-		P.appendChild(b);	
-	});
+		#make-a-card form .bordered {
+			border: 1px solid black;
+			pointer-events: none;
+			user-select: none;
+		}
+	</style>
+</head>
 
-	document.getElementById('top-nav').appendChild(Create);	
-	document.getElementById('top-nav').appendChild(Study);	
-}
-  </script>
-  </body>
+<body>
+	<div id="top-nav"></div>
+	<div id="page1"></div>
+	<div id="make-a-card"></div>
+	<div id="page3"></div>
+	<script type="text/javascript">
+		function autorun() {
+			initTopNav();
+		}
+		if (document.addEventListener) document.addEventListener("DOMContentLoaded", autorun, false);
+		else if (document.attachEvent) document.attachEvent("onreadystatechange", autorun);
+		else window.onload = autorun;
+
+		function initTopNav() {
+			const [Create, Study] = topNavActions = [
+				document.createElement('input'),
+				document.createElement('input')
+			];
+
+			Create.value = 'create';
+			Study.value = 'study';
+
+			const P = document.getElementById('top-nav');
+
+			topNavActions.forEach((b) => {
+				b.type = 'button';
+				b.className += 'topnav-action';
+				P.appendChild(b);
+			});
+
+			Create.addEventListener('click', initMakeACard);
+
+			document.getElementById('top-nav').appendChild(Create);
+			document.getElementById('top-nav').appendChild(Study);
+		}
+
+		function initMakeACard() {
+			const form = document.createElement('form');
+			const front = document.createElement('textarea');
+			const back = document.createElement('textarea');
+			
+			[front, back].forEach((d) => {
+				d.className += 'text-box';
+			});
+			
+			const frontLabel = document.createElement('label');
+			const f_label_text = document.createElement('div'); 	 
+			f_label_text.innerText = 'front';
+			
+			const backLabel = document.createElement('label');
+			const b_label_text = document.createElement('div');
+			b_label_text.innerText = 'back';
+
+			[f_label_text, b_label_text].forEach((d) => d.className+= 'bordered');
+
+			frontLabel.appendChild(f_label_text);
+			frontLabel.appendChild(front);
+
+			backLabel.appendChild(b_label_text);
+			backLabel.appendChild(back);
+
+			[frontLabel, backLabel].forEach((d) => form.appendChild(d));
+
+			const Submit = document.createElement('button');
+			Submit.innerText = 'add';
+			Submit.type = 'Submit';
+			form.appendChild(Submit);
+
+			document.getElementById('make-a-card').appendChild(form);
+		}
+	</script>
+</body>
+
 </html>
-
