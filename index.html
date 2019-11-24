@@ -39,10 +39,13 @@
 	<div id="page1"></div>
 	<div id="make-a-card"></div>
 	<div id="page3"></div>
-	<script type="text/javascript">
+	<script src="Card.js"></script>
+	<script src="controller.js"></script>
+	<script>
 		function autorun() {
 			initTopNav();
 		}
+
 		if (document.addEventListener) document.addEventListener("DOMContentLoaded", autorun, false);
 		else if (document.attachEvent) document.attachEvent("onreadystatechange", autorun);
 		else window.onload = autorun;
@@ -71,9 +74,15 @@
 		}
 
 		function initMakeACard() {
+			const formData = {
+				front: '',
+				back: ''
+			};
 			const form = document.createElement('form');
 			const front = document.createElement('textarea');
+			front.name = 'front';
 			const back = document.createElement('textarea');
+			back.name = 'back';
 			
 			[front, back].forEach((d) => {
 				d.className += 'text-box';
@@ -101,87 +110,17 @@
 			Submit.innerText = 'add';
 			Submit.type = 'Submit';
 			form.appendChild(Submit);
+			form.onsubmit = function(e) {
+				e.preventDefault();
+				Object.keys(formData).map((key) => {
+					formData[key] = e.target.elements[key].value;
+				});
+
+				createCard(formData);
+			};
 
 			document.getElementById('make-a-card').appendChild(form);
 		}
-
-		function saveCard({ front, back }) {
-			const c = new Card(front, back);
-			c.persist();
-		}
-
-		class Card {
-			constructor(front = '', back = '', created_at, id) {
-				this._data = {
-					front,
-					back,
-					created_at,
-					id
-				};
-			}
-
-			get front() {
-				return this._data.front;
-			}
-
-			get back() {
-				return this._data.back;
-			}
-
-			get createdAt() {
-				return this._data.created_at;
-			}
-
-			set front(val) {
-				this._data.front = val;
-				return this;
-			} 
-
-			set back(val) {
-				this._data.back = val;
-				return this;
-			}
-
-			persist() {
-				const store = localStorage.getItem('FlC card storage') || new Stack(1);
-
-				if (!this._data.id) {
-				  store.stack.push(this._data);
-				  store.count++;
-					this._data.id = store.count;
-					localStorage.setItem('FlC card storage', store);
-					return this;
-				} else {
-				  let i = 0;	
-				  while (i < store.stack.length) {
-				  	if (store.stack[i].id === this._data.id) {
-							store.stack[i] = this._data;
-							localStorage.setItem('FlC card storage', store);
-							return this;
-				  	}
-				  	node++;
-				  }
-
-					throw new Error('id');
-				}
-			}
-		}
-
-		class Stack {
-			constructor(id) {
-				if(!id) {
-					throw new Error('id')
-				}
-				this._data = {
-					count: 0,
-					stack: [],
-					id: id
-				}
-			}
-		}
-
-
-
 	</script>
 </body>
 
