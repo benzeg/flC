@@ -1,5 +1,10 @@
 class Card {
-	constructor(front = '', back = '', created_at = new Date().toISOString(), id = (Math.random()*Math.pow(10, 17)).toString()) {
+	constructor({
+		front = '',
+		back = '',
+		created_at = new Date().toISOString(),
+		id = (Math.random()*Math.pow(10, 17)).toString()
+	}) {
 		this._data = {
 			front,
 			back,
@@ -29,10 +34,14 @@ class Card {
 	}
 
 	persist() {
-		const storeData = JSON.parse(localStorage.getItem('FlC card storage'));
-		const store = storeData ? new Stack(storeData) : new Stack();
+		const store = Stack.getStore();
 		store.addOrUpdate(this._data);	
 		localStorage.setItem('FlC card storage', JSON.stringify(store._data));
+	}
+
+	static find(id) {
+		const store = Stack.getStore();
+		return ( id ? store.stack[store.getCardIndexById({id})] : store.stack );
 	}
 }
 
@@ -69,7 +78,6 @@ class Stack {
 
   getCardIndexById(item) {
 		if (!item.id) {
-			item.id = (Math.random()*Math.pow(10, 17)).toString();
 			return this._data.stack.length;
 		}
 
@@ -81,5 +89,10 @@ class Stack {
       i++;
     }
     return i;
-  }
+	}
+
+	static getStore() {
+		const storeData = JSON.parse(localStorage.getItem('FlC card storage'));
+		return storeData ? new Stack(storeData) : new Stack();
+	}
 }
