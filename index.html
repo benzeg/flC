@@ -36,9 +36,8 @@
 
 <body>
 	<div id="top-nav"></div>
-	<div id="page1"></div>
-	<div id="make-a-card"></div>
-	<div id="page3"></div>
+	<div id="content"></div>
+
 	<script src="Card.js"></script>
 	<script src="controller.js"></script>
 	<script>
@@ -67,13 +66,20 @@
 				P.appendChild(b);
 			});
 
-			Create.addEventListener('click', initMakeACard);
+			const makeACard = initMakeACard.bind(null, clearPage);
+			const study = initStudy.bind(null, clearPage, loadCards);
+
+			Create.addEventListener('click', makeACard);
+			Study.addEventListener('click', study);
 
 			document.getElementById('top-nav').appendChild(Create);
 			document.getElementById('top-nav').appendChild(Study);
 		}
 
-		function initMakeACard() {
+		function initMakeACard(...pretasks) {
+			const e = pretasks.pop();
+			pretasks.forEach((t) => t());
+			
 			const formData = {
 				front: '',
 				back: ''
@@ -119,8 +125,37 @@
 				addOrUpdateCard(formData);
 			};
 
-			document.getElementById('make-a-card').appendChild(form);
+			document.getElementById('content').appendChild(form);
 		}
+
+		function initStudy(...pretasks) {
+			const e = pretasks.pop();
+			pretasks.forEach((t) => t());
+			let whichCard = JSON.parse(sessionStorage.getItem('whichCard'));
+			let cardData = sessionStorage.getItem(whichCard);
+			if (!cardData) {
+				return;
+			}
+			let card = new Card(JSON.parse(cardData));
+			let cardFace = 'front';
+
+			const display = document.createElement('div'); 
+			display.className += 'card-face';
+			display.innerText = card[cardFace];
+
+			document.getElementById('content').appendChild(display);
+		}
+
+		function clearPage() {
+			document.getElementById('content').innerHTML = '';
+		}
+
+		function loadCards() {
+			const cards = getCard(); 
+			cards.forEach((c, index) => sessionStorage.setItem(index, JSON.stringify(c)));
+			sessionStorage.setItem('whichCard', 0);
+		}
+
 	</script>
 </body>
 
