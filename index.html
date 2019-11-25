@@ -31,13 +31,30 @@
 			pointer-events: none;
 			user-select: none;
 		}
+
+		#content {
+			position: relative;
+		}
+
+		#card-face {
+			border: 2px solid #333333;
+			height: 33em;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		#flip {
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
 	</style>
 </head>
 
 <body>
 	<div id="top-nav"></div>
 	<div id="content"></div>
-
 	<script src="Card.js"></script>
 	<script src="controller.js"></script>
 	<script>
@@ -140,10 +157,23 @@
 			let cardFace = 'front';
 
 			const display = document.createElement('div'); 
-			display.className += 'card-face';
+			display.setAttribute('id', 'card-face');
 			display.innerText = card[cardFace];
 
-			document.getElementById('content').appendChild(display);
+			const content = document.getElementById('content');
+			content.appendChild(display);
+
+			const flipButton = document.createElement('button');
+			flipButton.setAttribute('id', 'flip');
+			flipButton.onclick = flip;
+			flipButton.innerText = 'flip';
+
+			content.appendChild(flipButton);
+
+			function flip() {
+				cardFace = cardFace === 'front' ? 'back': 'front';
+				display.innerText = card[cardFace];
+			}
 		}
 
 		function clearPage() {
@@ -155,7 +185,6 @@
 			cards.forEach((c, index) => sessionStorage.setItem(index, JSON.stringify(c)));
 			sessionStorage.setItem('whichCard', 0);
 		}
-
 	</script>
 </body>
 
