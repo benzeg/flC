@@ -170,9 +170,52 @@
 
 			content.appendChild(flipButton);
 
+			const prev = document.createElement('button');
+			prev.setAttribute('id', 'prev');
+			prev.onclick = shift.bind(null, -1);
+			prev.innerText = 'previous';
+
+			const next = document.createElement('button');
+			next.setAttribute('id', 'next');
+			next.onclick = shift.bind(null, 1);
+			next.innerText = 'next';
+
+			content.appendChild(prev);
+			content.appendChild(next);
+
+			/**
+			*/
+			let flipping = false;
 			function flip() {
+				if (flipping) return;
+				flipping = true;
 				cardFace = cardFace === 'front' ? 'back': 'front';
 				display.innerText = card[cardFace];
+				flipping = false;
+			}
+
+			/**
+			 */ 
+			let shifting = false;
+			function shift(direction) {
+				if (shifting) return;
+				shifting = true;
+
+				whichCard += direction;
+				if (!sessionStorage.getItem(whichCard)) {
+					whichCard = 0;
+				}
+
+			  let cardData = sessionStorage.getItem(whichCard);
+			  if (!cardData) {
+			  	return;
+			  }
+			  card = new Card(JSON.parse(cardData));
+			  cardFace = 'front';
+			  display.innerText = card[cardFace];
+				sessionStorage.setItem('whichCard', whichCard);
+
+				shifting = false;
 			}
 		}
 
