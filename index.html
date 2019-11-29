@@ -5,51 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>title</title>
-	<style>
-		#top-nav {
-			display: flex;
-			flex-direction: row;
-			justify-content: flex-end;
-		}
-
-		#top-nav .topnav-action+.topnav-action {
-			margin-left: 1em;
-		}
-
-		#make-a-card form {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-		}
-
-		#make-a-card form > * + * {
-			margin-top: 1em;
-		}
-
-		#make-a-card form .bordered {
-			border: 1px solid black;
-			pointer-events: none;
-			user-select: none;
-		}
-
-		#content {
-			position: relative;
-		}
-
-		#card-face {
-			border: 2px solid #333333;
-			height: 33em;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-
-		#flip {
-			position: absolute;
-			top: 0;
-			right: 0;
-		}
-	</style>
+	<link href="styles.css" rel="stylesheet">
 </head>
 
 <body>
@@ -102,6 +58,7 @@
 				back: ''
 			};
 			const form = document.createElement('form');
+			form.setAttribute('id', 'make-a-card');
 			const front = document.createElement('textarea');
 			front.name = 'front';
 			const back = document.createElement('textarea');
@@ -130,6 +87,7 @@
 			[frontLabel, backLabel].forEach((d) => form.appendChild(d));
 
 			const Submit = document.createElement('button');
+			Submit.setAttribute('id', 'submit');
 			Submit.innerText = 'add';
 			Submit.type = 'Submit';
 			form.appendChild(Submit);

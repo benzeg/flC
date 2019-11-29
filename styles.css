@@ -1,0 +1,63 @@
+#top-nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+#top-nav .topnav-action+.topnav-action {
+	margin-left: 1em;
+}
+
+form#make-a-card {
+	display: flex;
+	flex-direction: column;
+  margin: 2em 10vw 0 10vw;
+  align-items: stretch;
+}
+
+form#make-a-card > * + * {
+	margin-top: 1em;
+}
+
+form#make-a-card .bordered {
+	border: 1px inset black;
+	pointer-events: none;
+  user-select: none;
+  position: absolute;
+  height:1.5em;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+form#make-a-card textarea {
+  height: 30em;
+  width: 100%;
+  padding-top: 3em;
+}
+
+form#make-a-card label {
+  position: relative;
+}
+
+form#make-a-card #submit {
+  align-self: flex-start;
+}
+
+#content {
+	position: relative;
+}
+
+#card-face {
+	border: 2px solid #333333;
+	height: 33em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#flip {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
