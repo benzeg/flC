@@ -61,30 +61,15 @@
 			form.setAttribute('id', 'make-a-card');
 			const front = document.createElement('textarea');
 			front.name = 'front';
+			front.placeholder = 'Front';
 			const back = document.createElement('textarea');
 			back.name = 'back';
+			back.placeholder = 'Back';
 			
 			[front, back].forEach((d) => {
 				d.className += 'text-box';
+				form.appendChild(d);
 			});
-			
-			const frontLabel = document.createElement('label');
-			const f_label_text = document.createElement('div'); 	 
-			f_label_text.innerText = 'front';
-			
-			const backLabel = document.createElement('label');
-			const b_label_text = document.createElement('div');
-			b_label_text.innerText = 'back';
-
-			[f_label_text, b_label_text].forEach((d) => d.className+= 'bordered');
-
-			frontLabel.appendChild(f_label_text);
-			frontLabel.appendChild(front);
-
-			backLabel.appendChild(b_label_text);
-			backLabel.appendChild(back);
-
-			[frontLabel, backLabel].forEach((d) => form.appendChild(d));
 
 			const Submit = document.createElement('button');
 			Submit.setAttribute('id', 'submit');

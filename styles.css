@@ -23,21 +23,9 @@ form#make-a-card > * + * {
 	margin-top: 1em;
 }
 
-form#make-a-card .bordered {
-	border: 1px inset black;
-	pointer-events: none;
-  user-select: none;
-  position: absolute;
-  height:1.5em;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
 form#make-a-card textarea {
-  height: 30em;
+  height: 10em;
   width: 100%;
-  padding-top: 3em;
 }
 
 form#make-a-card label {
@@ -45,7 +33,7 @@ form#make-a-card label {
 }
 
 form#make-a-card #submit {
-  align-self: flex-start;
+	width: 100%;
 }
 
 #content {
@@ -54,7 +42,7 @@ form#make-a-card #submit {
 
 #card-face {
 	border: 2px solid #333333;
-	height: 33em;
+	height: 70vh;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -64,4 +52,8 @@ form#make-a-card #submit {
 	position: absolute;
 	top: 0;
 	right: 0;
+}
+
+#next {
+	float: right;
 }
