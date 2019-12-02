@@ -23,11 +23,13 @@
 		else window.onload = autorun;
 
 		function initTopNav() {
-			const [Create, Study] = topNavActions = [
+			const [Purge, Create, Study] = topNavActions = [
+				document.createElement('input'),
 				document.createElement('input'),
 				document.createElement('input')
 			];
 
+			Purge.value = 'clear all';
 			Create.value = 'create';
 			Study.value = 'study';
 
@@ -42,6 +44,7 @@
 			const makeACard = initMakeACard.bind(null, clearPage);
 			const study = initStudy.bind(null, clearPage, loadCards);
 
+			Purge.addEventListener('click', () => window.confirm('Confirm Purge') ? purge(): null);
 			Create.addEventListener('click', makeACard);
 			Study.addEventListener('click', study);
 
@@ -170,6 +173,10 @@
 			const cards = getCard(); 
 			cards.forEach((c, index) => sessionStorage.setItem(index, JSON.stringify(c)));
 			sessionStorage.setItem('whichCard', 0);
+		}
+
+		function purge() {
+			localStorage.removeItem('FlC card storage');
 		}
 	</script>
 </body>
