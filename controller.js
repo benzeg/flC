@@ -1,4 +1,4 @@
-function addOrUpdateCard(cardData) {
+async function addOrUpdateCard(cardData) {
 	const c = new Card(cardData);
 	c.persist();
 }
