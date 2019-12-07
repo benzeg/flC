@@ -85,10 +85,42 @@
 					formData[key] = e.target.elements[key].value;
 				});
 
-				addOrUpdateCard(formData);
+				addOrUpdateCard(formData)
+					.then(confirmation);
 			};
 
 			document.getElementById('content').appendChild(form);
+
+			function confirmation() {
+				const canvas = document.createElement('canvas');
+				canvas.setAttribute('width', 150);
+				canvas.setAttribute('height', 150);
+				const content = document.getElementById('content');
+				content.innerHTML = '';
+				content.appendChild(canvas);
+
+				const ctx = canvas.getContext('2d');
+				const ring = new Path2D();
+				ring.arc(75, 75, 75, 0, Math.PI * 2);
+				ring.arc(75, 75, 62.5, 0, Math.PI * 2);
+				ctx.fillStyle = 'green';
+				ctx.fill(ring, 'evenodd');
+
+				ctx.translate(75, 75);
+				ctx.rotate(Math.PI / 4);
+				ctx.translate(-75, -75);
+
+				const check = new Path2D();
+				check.moveTo(45, 92.5);
+				check.lineTo(45, 105);
+				check.lineTo(95, 105);
+				check.lineTo(95, 30.5);
+				check.lineTo(82.5, 30.5);
+				check.lineTo(82.5, 92.5);
+				check.closePath();
+
+				ctx.fill(check);
+			}
 		}
 
 		function initStudy(...pretasks) {
