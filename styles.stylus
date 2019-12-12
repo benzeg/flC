@@ -40,3 +40,7 @@
 
 #next
   float right
+
+#draw
+  height 70vh
+  width 90vw

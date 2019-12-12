@@ -1,55 +1,47 @@
 #top-nav {
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
-
-#top-nav .topnav-action+.topnav-action {
-	margin-left: 1em;
+#top-nav .topnav-action + .topnav-action {
+  margin-left: 1em;
 }
-
 #content {
-	margin-top: 2em;
+  position: relative;
+  margin-top: 2em;
 }
-
-form#make-a-card {
-	display: flex;
-	flex-direction: column;
+#make-a-card {
+  display: flex;
+  flex-direction: column;
   margin: 0 10vw;
   align-items: stretch;
 }
-
-form#make-a-card > * + * {
-	margin-top: 1em;
+#make-a-card > * + * {
+  margin-top: 1em;
 }
-
-form#make-a-card textarea {
+#make-a-card textarea {
   height: 10em;
   width: 100%;
 }
-
-form#make-a-card #submit {
-	width: 100%;
+#make-a-card #submit {
+  width: 100%;
 }
-
-#content {
-	position: relative;
-}
-
 #card-face {
-	border: 2px solid #333333;
-	height: 70vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  border: 2px solid #333;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 #flip {
-	position: absolute;
-	top: 0;
-	right: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
-
 #next {
-	float: right;
+  float: right;
+}
+#draw {
+  height: 70vh;
+  width: 90vw;
 }
