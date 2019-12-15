@@ -58,7 +58,6 @@
 		}
 
 			function initDraw() {
-				var ongoingTouches = [];
 				const container = document.getElementById('content');
 				container.innerHTML = '';
 
@@ -71,44 +70,25 @@
 				el.addEventListener("touchcancel", handleCancel, false);
 				el.addEventListener("touchmove", handleMove, false);
 
-				var ongoingTouches = [];
+				const ongoingTouches = [];
+				const { x, y } = el.getBoundClientRect();
 
-
-			function copyTouch({ identifier, clientX, clientY }) {
-				return { identifier, clientX, clientY };
-			}
-
-			function ongoingTouchIndexById(idToFind) {
-				for (var i = 0; i < ongoingTouches.length; i++) {
-					var id = ongoingTouches[i].identifier;
-
-					if (id == idToFind) {
-						return i;
-					}
-				}
-				return -1;    // not found
-			}
-
-				function log(msg) {
-					var p = document.getElementById('log');
-					p.innerHTML = msg + "\n" + p.innerHTML;
-				}
 				function handleStart(evt) {
 					evt.preventDefault();
-					var el = document.getElementById("draw");
-					var ctx = el.getContext("2d");
-					var touches = evt.changedTouches;
+					const el = document.getElementById("draw");
+					const ctx = el.getContext("2d");;
+					const touches = evt.changedTouches;
 					const rw = el.width / el.clientWidth;
 					const rh = el.height / el.clientHeight;
 
 				  const clientRect = el.getBoundingClientRect();
 				  const clientX = clientRect.x;
 				  const clientY = clientRect.y;
-					for (var i = 0; i < touches.length; i++) {
+					for (const i = 0; i < touches.length; i++) {
 						ongoingTouches.push(copyTouch(touches[i]));
-						var color = '#000';
+						const color = '#000';
 						ctx.beginPath();
-						ctx.arc((touches[i].clientX - clientX)*rw, (touches[i].clientY - clientY)*rh, 1 / 2, 0, 2 * Math.PI, false);  // a circle at the start
+						ctx.arc((touches[i].clientX - clientX)*rw, (touches[i].clientY - clientY)*rh, 0.25, 0, 2 * Math.PI, false);  // a circle at the start
 
 						ctx.fillStyle = color;
 						ctx.fill();
@@ -118,23 +98,23 @@
 
 				function handleMove(evt) {
 					evt.preventDefault();
-					var el = document.getElementById("draw");
+					const el = document.getElementById("draw");
 					const rw = el.width / el.clientWidth;
 					const rh = el.height / el.clientHeight;
-					var ctx = el.getContext("2d");
-					var touches = evt.changedTouches;
+					const ctx = el.getContext("2d");
+					const touches = evt.changedTouches;
 				  const clientRect = el.getBoundingClientRect();
 				  const clientX = clientRect.x;
 				  const clientY = clientRect.y;
 
-					for (var i = 0; i < touches.length; i++) {
-						var color = '#000';
-						var idx = ongoingTouchIndexById(touches[i].identifier);
+					for (const i = 0; i < touches.length; i++) {
+						const color = '#000';
+						const idx = ongoingTouchIndexById(touches[i].identifier);
 						if (idx >= 0) {
 							ctx.beginPath();
 							ctx.moveTo((ongoingTouches[idx].clientX - clientX)*rw, (ongoingTouches[idx].clientY - clientY)*rh);
 							ctx.lineTo((touches[i].clientX - clientX)*rw, (touches[i].clientY - clientY)*rh);
-							ctx.lineWidth = 1;
+							ctx.lineWidth = 0.5;
 							ctx.strokeStyle = color;
 							ctx.stroke();
 
@@ -152,7 +132,7 @@
 
 				function handleCancel(evt) {
 					evt.preventDefault();
-					var touches = evt.changedTouches;
+					const touches = evt.changedTouches;
 					ongoingTouches = [];
 				}
 			}
