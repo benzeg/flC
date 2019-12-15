@@ -72,12 +72,10 @@
 				el.addEventListener("touchmove", handleMove, false);
 
 				var ongoingTouches = [];
-				const clientRect = el.getBoundingClientRect();
-				const clientX = clientRect.x;
-				const clientY = clientRect.y;
 
-			function copyTouch({ identifier, pageX, pageY }) {
-				return { identifier, pageX, pageY };
+
+			function copyTouch({ identifier, clientX, clientY }) {
+				return { identifier, clientX, clientY };
 			}
 
 			function ongoingTouchIndexById(idToFind) {
@@ -100,22 +98,20 @@
 					var el = document.getElementById("draw");
 					var ctx = el.getContext("2d");
 					var touches = evt.changedTouches;
-					console.log(touches)
-					console.log(clientX)
-					console.log(clientY)
 					const rw = el.width / el.clientWidth;
 					const rh = el.height / el.clientHeight;
 
+				  const clientRect = el.getBoundingClientRect();
+				  const clientX = clientRect.x;
+				  const clientY = clientRect.y;
 					for (var i = 0; i < touches.length; i++) {
-						console.log("touchstart:" + i + "...");
 						ongoingTouches.push(copyTouch(touches[i]));
 						var color = '#000';
 						ctx.beginPath();
-						console.log('move to:', touches[i].clientX - clientX, touches[i].clientY - clientY)
-						ctx.arc((touches[i].clientX - clientX)*rw, (touches[i].clientY - clientY)*rh, 4, 0, 2 * Math.PI, false);  // a circle at the start
+						ctx.arc((touches[i].clientX - clientX)*rw, (touches[i].clientY - clientY)*rh, 1 / 2, 0, 2 * Math.PI, false);  // a circle at the start
+
 						ctx.fillStyle = color;
 						ctx.fill();
-						console.log("touchstart:" + i + ".");
 					}
 				}
 
@@ -127,23 +123,22 @@
 					const rh = el.height / el.clientHeight;
 					var ctx = el.getContext("2d");
 					var touches = evt.changedTouches;
+				  const clientRect = el.getBoundingClientRect();
+				  const clientX = clientRect.x;
+				  const clientY = clientRect.y;
 
 					for (var i = 0; i < touches.length; i++) {
 						var color = '#000';
 						var idx = ongoingTouchIndexById(touches[i].identifier);
 						if (idx >= 0) {
-							console.log("continuing touch " + idx);
 							ctx.beginPath();
-							console.log("ctx.moveTo(" + ongoingTouches[idx].pageX + ", " + ongoingTouches[idx].pageY + ");");
 							ctx.moveTo((ongoingTouches[idx].clientX - clientX)*rw, (ongoingTouches[idx].clientY - clientY)*rh);
-							console.log("ctx.lineTo(" + touches[i].pageX + ", " + touches[i].pageY + ");");
 							ctx.lineTo((touches[i].clientX - clientX)*rw, (touches[i].clientY - clientY)*rh);
-							ctx.lineWidth = 4;
+							ctx.lineWidth = 1;
 							ctx.strokeStyle = color;
 							ctx.stroke();
 
 							ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
-							console.log(".");
 						} else {
 							console.log("can't figure out which touch to continue");
 						}
@@ -152,39 +147,13 @@
 
 				function handleEnd(evt) {
 					evt.preventDefault();
-					log("touchend");
-					var el = document.getElementById("draw");
-					const rw = el.width / el.clientWidth;
-					const rh = el.height / el.clientHeight;
-					var ctx = el.getContext("2d");
-					var touches = evt.changedTouches;
-
-					for (var i = 0; i < touches.length; i++) {
-						var color = '#000';
-						var idx = ongoingTouchIndexById(touches[i].identifier);
-						if (idx >= 0) {
-							ctx.lineWidth = 4;
-							ctx.fillStyle = color;
-							ctx.beginPath();
-							ctx.moveTo((ongoingTouches[idx].clientX - clientX)*rw, (ongoingTouches[idx].clientY - clientY)*rh);
-							ctx.lineTo((touches[i].clientX - clientX)*rw, (touches[i].clientY - clientY)*rh);
-							ctx.fillRect((touches[i].clientX - clientX)*rw - 4, (touches[i].clientY - clientY)*rh - 4, 8, 8);  // and a square at the end
-							ongoingTouches.splice(idx, 1);  // remove it; we're done
-						} else {
-							console.log("can't figure out which touch to end");
-						}
-					}
+					ongoingTouches = [];
 				}
 
 				function handleCancel(evt) {
 					evt.preventDefault();
-					console.log("touchcancel.");
 					var touches = evt.changedTouches;
-
-					for (var i = 0; i < touches.length; i++) {
-						var idx = ongoingTouchIndexById(touches[i].identifier);
-						ongoingTouches.splice(idx, 1);  // remove it; we're done
-					}
+					ongoingTouches = [];
 				}
 			}
 
