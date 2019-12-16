@@ -1,10 +1,15 @@
 class Sketchpad extends HTMLCanvasElement {
   constructor() {
-    super();
+    const self = super();
+    this.self = self;
     this.activeTouches = new Map();
     this.activePointer = null;
     this.pointerWidth = 1;
     this.pointerColor = '#000';
+
+    window.onorientationchange = this.updateDimensions; 
+    this.self.addEventListener('touchstart', this.touchstart, false);
+    this.self.addEventListener('touchmove', this.touchmove, false);
   }
 
   touchstart(evt) {
@@ -30,7 +35,7 @@ class Sketchpad extends HTMLCanvasElement {
     const Log = document.getElementById('log');
     Log.innerHTML = 'touchmove: ' + JSON.stringify(evt.changedTouches);
     evt.preventDefault();
-    const ctx = this.getContext('2d');
+    const ctx = this.self.getContext('2d');
     ctx.fillStyle = this.pointerColor;
 
     let i = 0;
@@ -49,30 +54,28 @@ class Sketchpad extends HTMLCanvasElement {
           clientY: clientY_next
         });
       }
+
       i++;
     }
   }
 
   gridX(pointer_x) {
-    const { x } = this.getBoundingClientRect();
-    return (pointer_x - x) + this.scrollLeft;
+    const { x } = this.self.getBoundingClientRect();
+    return (pointer_x - x) + this.self.scrollLeft;
   }
 
   gridY(pointer_y) {
-    const { y } = this.getBoundingClientRect();
-    return (pointer_y - y) + this.scrollTop;
+    const { y } = this.self.getBoundingClientRect();
+    return (pointer_y - y) + this.self.scrollTop;
   }
 
   updateDimensions() {
-    this.width = this.scrollWidth;
-    this.height = this.scrollHeight;
+    this.self.width = this.self.scrollWidth;
+    this.self.height = this.self.scrollHeight;
   }
 
   connectedCallback() {
     this.updateDimensions();
-    window.onorientationchange = this.updateDimensions; 
-    this.addEventListener('touchstart', this.touchstart, false);
-    this.addEventListener('touchmove', this.touchmove, false);
   }
 
   static get observedAttributes() {
@@ -82,10 +85,10 @@ class Sketchpad extends HTMLCanvasElement {
   attributeChangedCallback(name, oldValue, newValue) {
     switch(name) {
       case 'scrollWidth':
-        this.width = newValue;
+        this.self.width = newValue;
         break;
       case 'scrollHeight':
-        this.height = newValue;
+        this.self.height = newValue;
         break;
     }
   }
