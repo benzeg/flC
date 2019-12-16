@@ -60,3 +60,11 @@ body
 #draw
   height 100%
   width 100%
+
+#log
+  position absolute
+  bottom 0
+  left 0
+  right 0
+  height 50vh
+  z-index 100

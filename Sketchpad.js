@@ -12,6 +12,8 @@ class Sketchpad extends HTMLCanvasElement {
   }
 
   touchstart(evt) {
+    const Log = document.getElementById('log');
+    Log.innerHTML = 'touchstart: ' + JSON.stringify(evt.changedTouches);
     evt.preventDefault();
     this.activeTouches.clear();
     const ctx = this.getContext('2d');
@@ -29,6 +31,8 @@ class Sketchpad extends HTMLCanvasElement {
   }
 
   touchmove(evt) {
+    const Log = document.getElementById('log');
+    Log.innerHTML = 'touchmove: ' + JSON.stringify(evt.changedTouches);
     evt.preventDefault();
     const ctx = this.getContext('2d');
     ctx.fillStyle = this.pointerColor;
