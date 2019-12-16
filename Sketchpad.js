@@ -1,15 +1,9 @@
-export default class Sketchpad extends HTMLCanvasElement {
+class Sketchpad extends HTMLCanvasElement {
   constructor() {
     super();
-    const clientRect = this.getBoundingClientRect();
-    this.x = clientRect.x;
-    this.y = clientRect.y;
-    this.clientWidth_ratio = this.width / this.clientWidth;
-    this.clientHeight_ratio = this.height / this.clientHeight;
     this.activeTouches = new Map();
     this.activePointer = null;
-
-    this.pointerWidth = 0.5;
+    this.pointerWidth = 1;
     this.pointerColor = '#000';
 
     this.addEventListener('touchstart', this.touchstart, false);
@@ -42,10 +36,13 @@ export default class Sketchpad extends HTMLCanvasElement {
     while (i < evt.changedTouches.length) {
       const { identifier, clientX: clientX_next, clientY: clientY_next } = evt.changedTouches[i];
       const point_prev = this.activeTouches.get(identifier); 
+
       if (point_prev) {
         ctx.beginPath();
         ctx.moveTo(this.gridX(point_prev.clientX), this.gridY(point_prev.clientY));
         ctx.lineTo(this.gridX(clientX_next), this.gridY(clientY_next));
+        ctx.stroke();
+
         this.activeTouches.set(identifier, {
           clientX: clientX_next,
           clientY: clientY_next
@@ -57,10 +54,32 @@ export default class Sketchpad extends HTMLCanvasElement {
   }
 
   gridX(pointer_x) {
-    return (pointer_x - this.x)*this.clientWidth_ratio;
+    const { x } = this.getBoundingClientRect();
+    return (pointer_x - x) + this.scrollLeft;
   }
 
   gridY(pointer_y) {
-    return (pointer_y - this.y)*this.clientHeight_ratio;
+    const { y } = this.getBoundingClientRect();
+    return (pointer_y - y) + this.scrollTop;
+  }
+
+  connectedCallback() {
+    this.width = this.scrollWidth;
+    this.height = this.scrollHeight;
+  }
+
+  static get observedAttributes() {
+    return ['scrollWidth', 'scrollHeight'];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    switch(name) {
+      case 'scrollWidth':
+        this.width = newValue;
+        break;
+      case 'scrollHeight':
+        this.height = newValue;
+        break;
+    }
   }
 }

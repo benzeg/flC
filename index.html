@@ -14,8 +14,10 @@
 	<div id="log"></div>
 	<script src="Card.js"></script>
 	<script src="controller.js"></script>
+	<script src="Sketchpad.js"></script>
 	<script>
 		function autorun() {
+			customElements.define('sketch-pad', Sketchpad, { extends: 'canvas'});
 			initTopNav();
 		}
 
@@ -57,85 +59,13 @@
 			document.getElementById('top-nav').appendChild(Draw);
 		}
 
-			function initDraw() {
-				const container = document.getElementById('content');
-				container.innerHTML = '';
-
-				const el = document.createElement('canvas');
-				container.appendChild(el);
-				el.setAttribute('id', 'draw');
-
-				el.addEventListener("touchstart", handleStart, false);
-				el.addEventListener("touchend", handleEnd, false);
-				el.addEventListener("touchcancel", handleCancel, false);
-				el.addEventListener("touchmove", handleMove, false);
-
-				const ongoingTouches = [];
-				const { x, y } = el.getBoundClientRect();
-
-				function handleStart(evt) {
-					evt.preventDefault();
-					const el = document.getElementById("draw");
-					const ctx = el.getContext("2d");;
-					const touches = evt.changedTouches;
-					const rw = el.width / el.clientWidth;
-					const rh = el.height / el.clientHeight;
-
-				  const clientRect = el.getBoundingClientRect();
-				  const clientX = clientRect.x;
-				  const clientY = clientRect.y;
-					for (const i = 0; i < touches.length; i++) {
-						ongoingTouches.push(copyTouch(touches[i]));
-						const color = '#000';
-						ctx.beginPath();
-						ctx.arc((touches[i].clientX - clientX)*rw, (touches[i].clientY - clientY)*rh, 0.25, 0, 2 * Math.PI, false);  // a circle at the start
-
-						ctx.fillStyle = color;
-						ctx.fill();
-					}
-				}
-
-
-				function handleMove(evt) {
-					evt.preventDefault();
-					const el = document.getElementById("draw");
-					const rw = el.width / el.clientWidth;
-					const rh = el.height / el.clientHeight;
-					const ctx = el.getContext("2d");
-					const touches = evt.changedTouches;
-				  const clientRect = el.getBoundingClientRect();
-				  const clientX = clientRect.x;
-				  const clientY = clientRect.y;
-
-					for (const i = 0; i < touches.length; i++) {
-						const color = '#000';
-						const idx = ongoingTouchIndexById(touches[i].identifier);
-						if (idx >= 0) {
-							ctx.beginPath();
-							ctx.moveTo((ongoingTouches[idx].clientX - clientX)*rw, (ongoingTouches[idx].clientY - clientY)*rh);
-							ctx.lineTo((touches[i].clientX - clientX)*rw, (touches[i].clientY - clientY)*rh);
-							ctx.lineWidth = 0.5;
-							ctx.strokeStyle = color;
-							ctx.stroke();
-
-							ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
-						} else {
-							console.log("can't figure out which touch to continue");
-						}
-					}
-				}
-
-				function handleEnd(evt) {
-					evt.preventDefault();
-					ongoingTouches = [];
-				}
-
-				function handleCancel(evt) {
-					evt.preventDefault();
-					const touches = evt.changedTouches;
-					ongoingTouches = [];
-				}
-			}
+		function initDraw() {
+			const container = document.getElementById('content');
+			container.innerHTML = '';
+			const sketchpad = document.createElement('canvas', { is: 'sketch-pad' });
+			sketchpad.setAttribute('id', 'draw');
+			container.appendChild(sketchpad);
+		}
 
 		function initMakeACard(...pretasks) {
 			const e = pretasks.pop();
