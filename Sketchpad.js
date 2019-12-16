@@ -5,10 +5,6 @@ class Sketchpad extends HTMLCanvasElement {
     this.activePointer = null;
     this.pointerWidth = 1;
     this.pointerColor = '#000';
-
-    window.onorientationchange = this.updateDimensions; 
-    this.addEventListener('touchstart', this.touchstart, false);
-    this.addEventListener('touchmove', this.touchmove, false);
   }
 
   touchstart(evt) {
@@ -53,7 +49,6 @@ class Sketchpad extends HTMLCanvasElement {
           clientY: clientY_next
         });
       }
-
       i++;
     }
   }
@@ -75,6 +70,9 @@ class Sketchpad extends HTMLCanvasElement {
 
   connectedCallback() {
     this.updateDimensions();
+    window.onorientationchange = this.updateDimensions; 
+    this.addEventListener('touchstart', this.touchstart, false);
+    this.addEventListener('touchmove', this.touchmove, false);
   }
 
   static get observedAttributes() {
