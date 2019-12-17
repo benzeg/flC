@@ -12,9 +12,9 @@
 	<div id="top-nav"></div>
 	<div id="content"></div>
 	<div id="log"></div>
-	<script src="Card.js"></script>
-	<script src="controller.js"></script>
-	<script src="Sketchpad.js"></script>
+	<script defer src="Card.js"></script>
+	<script defer src="controller.js"></script>
+	<script defer src="Sketchpad.js"></script>
 	<script>
 		function autorun() {
 			customElements.define('sketch-pad', Sketchpad, { extends: 'canvas'});
@@ -68,7 +68,7 @@
 
 			const Log = document.getElementById('log');
 			sketchpad.addEventListener('touchstart', function() {
-				Log.innerHTML = 'touch START';
+				Log.innerHTML = JSON.stringify(sketchpad);
 			});
 		}
 
