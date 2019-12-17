@@ -70,9 +70,6 @@
 			sketchpad.addEventListener('touchstart', function() {
 				Log.innerHTML = 'touch START';
 			});
-			sketchpad.addEventListener('touchmove', function() {
-				Log.innerHTML = JSON.stringify(sketchpad.outerHTML);
-			})
 		}
 
 		function initMakeACard(...pretasks) {
