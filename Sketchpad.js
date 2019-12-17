@@ -1,7 +1,6 @@
 class Sketchpad extends HTMLCanvasElement {
   constructor() {
-    const self = super();
-    this = self;
+    super();
     this.activeTouches = new Map();
     this.activePointer = null;
     this.pointerWidth = 1;

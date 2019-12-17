@@ -65,6 +65,11 @@
 			const sketchpad = document.createElement('canvas', { is: 'sketch-pad' });
 			sketchpad.setAttribute('id', 'draw');
 			container.appendChild(sketchpad);
+
+			const Log = document.getElementById('log');
+			sketchpad.addEventListener('touchstart', function() {
+				Log.innerHTML = 'touch START'
+			})
 		}
 
 		function initMakeACard(...pretasks) {
