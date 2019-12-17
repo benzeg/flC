@@ -71,7 +71,7 @@
 				Log.innerHTML = 'touch START';
 			});
 			sketchpad.addEventListener('touchmove', function() {
-				Log.innerHTML = sketchpad.outerHTML;
+				Log.innerHTML = JSON.stringify(sketchpad.outerHTML);
 			})
 		}
 
