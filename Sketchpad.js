@@ -5,8 +5,8 @@ class Sketchpad extends HTMLCanvasElement {
     this.activePointer = null;
     this.pointerWidth = 1;
     this.pointerColor = '#000';
-    this.addEventListener('touchstart', this.touchstart);
-    this.addEventListener('touchmove', this.touchmove);
+    this.addEventListener('touchstart', this.touchstart.bind(this));
+    this.addEventListener('touchmove', this.touchmove.bind(this));
   }
 
   touchstart(evt) {
