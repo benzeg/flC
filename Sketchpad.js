@@ -1,15 +1,15 @@
 class Sketchpad extends HTMLCanvasElement {
   constructor() {
     const self = super();
-    this.self = self;
+    this = self;
     this.activeTouches = new Map();
     this.activePointer = null;
     this.pointerWidth = 1;
     this.pointerColor = '#000';
 
     window.onorientationchange = this.updateDimensions; 
-    this.self.addEventListener('touchstart', this.touchstart, false);
-    this.self.addEventListener('touchmove', this.touchmove, false);
+    this.addEventListener('touchstart', this.touchstart, false);
+    this.addEventListener('touchmove', this.touchmove, false);
   }
 
   touchstart(evt) {
@@ -35,7 +35,7 @@ class Sketchpad extends HTMLCanvasElement {
     const Log = document.getElementById('log');
     Log.innerHTML = 'touchmove: ' + JSON.stringify(evt.changedTouches);
     evt.preventDefault();
-    const ctx = this.self.getContext('2d');
+    const ctx = this.getContext('2d');
     ctx.fillStyle = this.pointerColor;
 
     let i = 0;
@@ -60,18 +60,18 @@ class Sketchpad extends HTMLCanvasElement {
   }
 
   gridX(pointer_x) {
-    const { x } = this.self.getBoundingClientRect();
-    return (pointer_x - x) + this.self.scrollLeft;
+    const { x } = this.getBoundingClientRect();
+    return (pointer_x - x) + this.scrollLeft;
   }
 
   gridY(pointer_y) {
-    const { y } = this.self.getBoundingClientRect();
-    return (pointer_y - y) + this.self.scrollTop;
+    const { y } = this.getBoundingClientRect();
+    return (pointer_y - y) + this.scrollTop;
   }
 
   updateDimensions() {
-    this.self.width = this.self.scrollWidth;
-    this.self.height = this.self.scrollHeight;
+    this.width = this.scrollWidth;
+    this.height = this.scrollHeight;
   }
 
   connectedCallback() {
@@ -85,10 +85,10 @@ class Sketchpad extends HTMLCanvasElement {
   attributeChangedCallback(name, oldValue, newValue) {
     switch(name) {
       case 'scrollWidth':
-        this.self.width = newValue;
+        this.width = newValue;
         break;
       case 'scrollHeight':
-        this.self.height = newValue;
+        this.height = newValue;
         break;
     }
   }
