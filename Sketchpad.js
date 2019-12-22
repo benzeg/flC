@@ -1,20 +1,30 @@
-class Sketchpad extends HTMLCanvasElement {
+class Sketchpad extends HTMLElement {
   constructor() {
     super();
     this.activeTouches = new Map();
     this.activePointer = null;
     this.pointerWidth = 1;
     this.pointerColor = '#000';
+
+    const shadow = this.attachShadow({mode: 'open'});
+    const linkElem = document.createElement('link');
+    linkElem.setAttribute('rel', 'stylesheet');
+    linkElem.setAttribute('href', 'sketchpad.css')
+    shadow.appendChild(linkElem);
+
+    this.canvas = document.createElement('canvas');
+    this.canvas.setAttribute('id', 'draw');
+    
+    shadow.appendChild(this.canvas);
+
     this.addEventListener('touchstart', this.touchstart.bind(this));
     this.addEventListener('touchmove', this.touchmove.bind(this));
   }
 
   touchstart(evt) {
-    const Log = document.getElementById('log');
-    Log.innerHTML = 'touchstart: ' + JSON.stringify(evt.changedTouches);
     evt.preventDefault();
     this.activeTouches.clear();
-    const ctx = this.getContext('2d');
+    const ctx = this.canvas.getContext('2d');
     ctx.fillStyle = this.pointerColor;
 
     let i = 0;
@@ -29,10 +39,8 @@ class Sketchpad extends HTMLCanvasElement {
   }
 
   touchmove(evt) {
-    const Log = document.getElementById('log');
-    Log.innerHTML = 'touchmove: ' + JSON.stringify(evt.changedTouches);
     evt.preventDefault();
-    const ctx = this.getContext('2d');
+    const ctx = this.canvas.getContext('2d');
     ctx.fillStyle = this.pointerColor;
 
     let i = 0;
@@ -57,18 +65,18 @@ class Sketchpad extends HTMLCanvasElement {
   }
 
   gridX(pointer_x) {
-    const { x } = this.getBoundingClientRect();
-    return (pointer_x - x) + this.scrollLeft;
+    const { x } = this.canvas.getBoundingClientRect();
+    return (pointer_x - x) + this.canvas.scrollLeft;
   }
 
   gridY(pointer_y) {
-    const { y } = this.getBoundingClientRect();
-    return (pointer_y - y) + this.scrollTop;
+    const { y } = this.canvas.getBoundingClientRect();
+    return (pointer_y - y) + this.canvas.scrollTop;
   }
 
   updateDimensions() {
-    this.width = this.scrollWidth;
-    this.height = this.scrollHeight;
+    this.canvas.width = this.canvas.scrollWidth;
+    this.canvas.height = this.canvas.scrollHeight;
   }
 
   connectedCallback() {
@@ -82,10 +90,10 @@ class Sketchpad extends HTMLCanvasElement {
   attributeChangedCallback(name, oldValue, newValue) {
     switch(name) {
       case 'scrollWidth':
-        this.width = newValue;
+        this.canvas.width = newValue;
         break;
       case 'scrollHeight':
-        this.height = newValue;
+        this.canvas.height = newValue;
         break;
     }
   }

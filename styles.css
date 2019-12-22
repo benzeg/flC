@@ -57,10 +57,6 @@ body {
 #next {
   float: right;
 }
-#draw {
-  height: 100%;
-  width: 100%;
-}
 #log {
   position: absolute;
   bottom: 0;

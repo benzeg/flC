@@ -11,13 +11,12 @@
 <body>
 	<div id="top-nav"></div>
 	<div id="content"></div>
-	<div id="log"></div>
 	<script defer src="Card.js"></script>
 	<script defer src="controller.js"></script>
 	<script defer src="Sketchpad.js"></script>
 	<script>
 		function autorun() {
-			customElements.define('sketch-pad', Sketchpad, { extends: 'canvas'});
+			customElements.define('sketch-pad', Sketchpad);
 			initTopNav();
 		}
 
@@ -62,14 +61,8 @@
 		function initDraw() {
 			const container = document.getElementById('content');
 			container.innerHTML = '';
-			const sketchpad = document.createElement('canvas', { is: 'sketch-pad' });
-			sketchpad.setAttribute('id', 'draw');
+			const sketchpad = document.createElement('sketch-pad');
 			container.appendChild(sketchpad);
-
-			const Log = document.getElementById('log');
-			sketchpad.addEventListener('touchstart', function() {
-				Log.innerHTML = JSON.stringify(sketchpad);
-			});
 		}
 
 		function initMakeACard(...pretasks) {
