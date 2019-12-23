@@ -19,6 +19,7 @@ class Sketchpad extends HTMLElement {
 
     this.addEventListener('touchstart', this.touchstart.bind(this));
     this.addEventListener('touchmove', this.touchmove.bind(this));
+    window.addEventListener('resize', this.updateDimensions.bind(this));
   }
 
   touchstart(evt) {
