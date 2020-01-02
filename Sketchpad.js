@@ -29,11 +29,6 @@ class Sketchpad extends HTMLElement {
     Save.className += 'save-drawing';
     shadow.appendChild(Save);
     Save.addEventListener('click', this.save.bind(this));
-    
-    //temp
-    const Temp = document.createElement('div');
-    Temp.setAttribute('id', 'Temp');
-    shadow.appendChild(Temp);
 
     //storage
     let imageStore = localStorage.getItem('handNotes');
