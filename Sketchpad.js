@@ -1,3 +1,4 @@
+const { Cu } = require("chrome");
 class Sketchpad extends HTMLElement {
   constructor() {
     super();
@@ -20,6 +21,35 @@ class Sketchpad extends HTMLElement {
     this.addEventListener('touchstart', this.touchstart.bind(this));
     this.addEventListener('touchmove', this.touchmove.bind(this));
     window.addEventListener('resize', this.updateDimensions.bind(this));
+
+
+    //Save Draw
+		const Save = document.createElement('input');
+		Save.value = 'save';
+		Save.type = 'button';
+    Save.className += 'save-drawing';
+    shadow.appendChild(Save);
+    Save.addEventListener('click', this.save.bind(this));
+    
+    //temp
+    const Temp = document.createElement('div');
+    Temp.setAttribute('id', 'Temp');
+    shadow.appendChild(Temp);
+
+    //storage
+    let imageStore = localStorage.getItem('handNotes');
+    if (!imageStore) {
+      this.images = new Map();
+    } else {
+      this.images = new Map(JSON.parse(imageStore));
+    }
+  }
+
+  save() {
+    this.canvas.toBlob(function(blob) {
+      const url = URL.createObjectURL(blob);
+      this.images.set(new Date().toISOString(), url);
+    });
   }
 
   touchstart(evt) {
@@ -97,5 +127,9 @@ class Sketchpad extends HTMLElement {
         this.canvas.height = newValue;
         break;
     }
+  }
+
+  disconnectedCallback() {
+    localStorage.setItem('handNotes', JSON.stringify(Array.from(this.images)));
   }
 }
