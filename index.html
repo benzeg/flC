@@ -4,16 +4,18 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=0">
-	<title>title</title>
+	<meta property="og:image" content="icons/tempIcon-512.png">
+	<title>Alchemy</title>
+	<link rel="shortcut icon" href="icons/favicon.ico">
 	<link href="styles.css" rel="stylesheet">
-</head>
-
-<body>
-	<div id="top-nav"></div>
-	<div id="content"></div>
+	<link rel="manifest" href="flC.webmanifest">
 	<script defer src="Card.js"></script>
 	<script defer src="controller.js"></script>
 	<script defer src="Sketchpad.js"></script>
+</head>
+<body>
+	<div id="top-nav"></div>
+	<div id="content"></div>
 	<script>
 		function autorun() {
 			customElements.define('sketch-pad', Sketchpad);
