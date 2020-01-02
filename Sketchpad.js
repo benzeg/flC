@@ -1,4 +1,3 @@
-const { Cu } = require("chrome");
 class Sketchpad extends HTMLElement {
   constructor() {
     super();
@@ -46,9 +45,9 @@ class Sketchpad extends HTMLElement {
   }
 
   save() {
-    this.canvas.toBlob(function(blob) {
+    this.canvas.toBlob((blob) => {
       const url = URL.createObjectURL(blob);
-      this.images.set(new Date().toISOString(), url);
+      this.images.set(new Date().getTime(), url);
     });
   }
 
