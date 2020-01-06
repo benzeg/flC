@@ -21,7 +21,7 @@ class Sketchpad extends HTMLElement {
     this.addEventListener('touchmove', this.touchmove.bind(this));
     window.addEventListener('resize', this.updateDimensions.bind(this));
 
-    this.updateDimensions();
+
     //Save Draw
 		const Save = document.createElement('input');
 		Save.value = 'save';
@@ -104,9 +104,9 @@ class Sketchpad extends HTMLElement {
     this.canvas.height = this.canvas.scrollHeight;
   }
 
-  //connectedCallback() {
-  //  this.updateDimensions();
-  //}
+  connectedCallback() {
+    this.updateDimensions();
+  }
 
   static get observedAttributes() {
     return ['scrollWidth', 'scrollHeight'];
