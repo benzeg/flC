@@ -1,9 +1,10 @@
 #draw {
   width: 100%;
+  height: 200%;
   background-color: #fbf3e2;
 }
 .save-drawing {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
 }
