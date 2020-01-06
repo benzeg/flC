@@ -3,7 +3,7 @@ class Sketchpad extends HTMLElement {
     super();
     this.activeTouches = new Map();
     this.activePointer = null;
-    this.pointerWidth = 1;
+    this.pointerWidth = 3;
     this.pointerColor = '#000';
 
     const shadow = this.attachShadow({mode: 'open'});
@@ -21,6 +21,13 @@ class Sketchpad extends HTMLElement {
     this.addEventListener('touchmove', this.touchmove.bind(this));
     window.addEventListener('resize', this.updateDimensions.bind(this));
 
+    //Add page
+    const Extend = document.createElement('input');
+    Extend.value = '+';
+    Extend.type = 'button';
+    Extend.className += 'add-page';
+    shadow.appendChild(Extend); 
+    Extend.addEventListener('click', this.addPage.bind(this), true);
 
     //Save Draw
 		const Save = document.createElement('input');
@@ -37,6 +44,20 @@ class Sketchpad extends HTMLElement {
     } else {
       this.images = new Map(JSON.parse(imageStore));
     }
+  }
+
+  addPage(evt) {
+    evt.preventDefault();
+    const oldCanvas = document.createElement('canvas');
+    const oldCtx = oldCanvas.getContext('2d');
+    oldCanvas.width = this.canvas.width;
+    oldCanvas.height = this.canvas.height;
+    oldCtx.drawImage(this.canvas, 0, 0);
+    const newHeight = this.scrollHeight + this.clientHeight; 
+
+    this.canvas.setAttribute('style', `height:${newHeight}px`);
+    this.canvas.height = newHeight;
+    this.canvas.getContext('2d').drawImage(oldCanvas, 0, 0);
   }
 
   save() {
@@ -75,6 +96,7 @@ class Sketchpad extends HTMLElement {
 
       if (point_prev) {
         ctx.beginPath();
+        ctx.lineWidth = this.pointerWidth;
         ctx.moveTo(this.gridX(point_prev.clientX), this.gridY(point_prev.clientY));
         ctx.lineTo(this.gridX(clientX_next), this.gridY(clientY_next));
         ctx.stroke();
@@ -91,17 +113,17 @@ class Sketchpad extends HTMLElement {
 
   gridX(pointer_x) {
     const { x } = this.canvas.getBoundingClientRect();
-    return (pointer_x - x) + this.canvas.scrollLeft;
+    return (pointer_x - x) + this.scrollLeft;
   }
 
   gridY(pointer_y) {
     const { y } = this.canvas.getBoundingClientRect();
-    return (pointer_y - y) + this.canvas.scrollTop;
+    return (pointer_y - y) + this.offsetTop;
   }
 
   updateDimensions() {
-    this.canvas.width = this.canvas.scrollWidth;
-    this.canvas.height = this.canvas.scrollHeight;
+    this.canvas.width = this.scrollWidth;
+    this.canvas.height = this.scrollHeight;
   }
 
   connectedCallback() {
